@@ -1,0 +1,818 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+    --nest-navy: #0B1E33;
+    --nest-navy-light: #15304D;
+    --nest-cyan: #4FC3E3;
+    --nest-cyan-dark: #2EA8C9;
+    --nest-bg: #F7FAFB;
+    --nest-surface: #FFFFFF;
+    --nest-ink: #16232E;
+    --nest-muted: #6B7C87;
+    --nest-border: #E3E8EB;
+    --nest-danger: #E5484D;
+    --nest-danger-light: #FDECEC;
+
+    /* added — used later in the file but never declared, check against your intended design */
+    --nest-primary: #4FC3E3;
+    --nest-primary-soft: #EAFAFD;
+    --nest-success: #34D399;
+    --nest-surface-raised: #F2F4F5;
+    --nest-text: #16232E;
+}
+
+/* ========================= GLOBAL ========================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--nest-bg);
+    color: var(--nest-ink);
+    font-family: 'Inter', sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    margin: 0;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 700;
+    color: var(--nest-ink);
+}
+
+a {
+    color: var(--nest-navy);
+    text-decoration: none;
+}
+
+a:hover {
+    color: var(--nest-cyan-dark);
+}
+
+/* ========================= MAIN PROJECT CONTENT — FULL WIDTH ========================= */
+
+.container-fluid.mt-4 {
+    width: 70%;
+    max-width: 70%;
+    margin: 0 auto;
+    padding: 2rem 0 3rem;
+}
+
+.navbar-container {
+    width: 70%;
+    max-width: 70%;
+    margin: 0 auto;
+}
+
+/* ========================= PAGE HEADER ========================= */
+
+.page-header {
+    margin-bottom: 1.75rem;
+}
+
+.page-header h2 {
+    font-size: 1.5rem;
+    margin-bottom: 0.3rem;
+}
+
+.page-subtext {
+    color: var(--nest-muted);
+    font-size: 0.92rem;
+    margin: 0;
+}
+
+/* ========================= NAVBAR ========================= */
+
+.navbar {
+    background-color: var(--nest-navy) !important;
+    padding: 0.8rem 2rem;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.3rem;
+    color: #fff !important;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.navbar-brand img {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.nav-link {
+    color: rgba(255, 255, 255, 0.75) !important;
+    font-weight: 500;
+    font-size: 0.92rem;
+    padding: 0.4rem 0.8rem !important;
+    border-radius: 6px;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.nav-link:hover {
+    color: #fff !important;
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.dropdown-menu {
+    border: 1px solid var(--nest-border);
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(15, 32, 39, 0.1);
+    font-size: 0.9rem;
+}
+
+.dropdown-item:hover {
+    background-color: #EAFAFD;
+    color: var(--nest-cyan-dark);
+}
+
+/* ========================= HERO BANNER ========================= */
+
+.hero-banner {
+    background: linear-gradient(135deg, var(--nest-navy) 0%, #164760 55%, var(--nest-cyan) 100%);
+    border-radius: 20px;
+    padding: 2.4rem 2.6rem;
+    margin-bottom: 2rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-banner::before {
+    content: '';
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 240px;
+    height: 240px;
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 50%;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 1;
+    max-width: 560px;
+}
+
+.hero-banner h1 {
+    color: #fff;
+    font-size: 1.8rem;
+    margin: 0 0 0.5rem;
+}
+
+.hero-banner p {
+    color: rgba(255, 255, 255, 0.85);
+    font-size: 0.98rem;
+    margin: 0;
+}
+
+/* ========================= STAT CARDS ========================= */
+
+.stat-card {
+    background: #fff;
+    border: 1px solid var(--nest-border);
+    transition: transform 0.15s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-3px);
+}
+
+.stat-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--nest-navy), var(--nest-navy-light));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--nest-cyan);
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.stat-number {
+    font-size: 1.85rem;
+    font-weight: 800;
+    color: var(--nest-navy);
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    color: var(--nest-muted);
+    margin-top: 0.25rem;
+    font-weight: 500;
+}
+
+/* ========================= BUTTONS ========================= */
+
+.btn {
+    font-weight: 600;
+    font-size: 0.88rem;
+    padding: 0.5rem 1.1rem;
+    border-radius: 6px;
+    transition: all 0.15s ease;
+}
+
+.btn-sm {
+    padding: 0.35rem 0.8rem;
+    font-size: 0.82rem;
+}
+
+.btn-primary {
+    background-color: var(--nest-navy);
+    border-color: var(--nest-navy);
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: var(--nest-navy-light);
+    border-color: var(--nest-navy-light);
+    color: #fff;
+}
+
+.btn-primary:disabled {
+    background-color: #A7B5C2;
+    border-color: #A7B5C2;
+}
+
+.btn-outline-primary {
+    background: #fff;
+    color: var(--nest-navy);
+    border-color: var(--nest-border);
+}
+
+.btn-outline-primary:hover {
+    background-color: #EAFAFD;
+    border-color: var(--nest-cyan);
+    color: var(--nest-navy);
+}
+
+.btn-outline-secondary {
+    background: #fff;
+    color: var(--nest-muted);
+    border-color: var(--nest-border);
+}
+
+.btn-outline-secondary:hover {
+    background: #F2F4F5;
+    color: var(--nest-ink);
+}
+
+.btn-outline-danger {
+    background: #fff;
+    color: var(--nest-danger);
+    border-color: var(--nest-border);
+}
+
+.btn-outline-danger:hover {
+    background: var(--nest-danger-light);
+    border-color: var(--nest-danger);
+}
+
+.btn-danger {
+    background-color: var(--nest-danger);
+    border-color: var(--nest-danger);
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background-color: #C93A3E;
+    border-color: #C93A3E;
+}
+
+/* ========================= FORMS ========================= */
+
+label,
+.form-label {
+    font-weight: 500;
+    font-size: 0.86rem;
+    color: var(--nest-ink);
+    margin-bottom: 0.3rem;
+}
+
+.form-control,
+.form-select {
+    border: 1px solid var(--nest-border);
+    border-radius: 6px;
+    padding: 0.55rem 0.8rem;
+    font-size: 0.9rem;
+    color: var(--nest-ink);
+}
+
+.form-control:focus,
+.form-select:focus {
+    border-color: var(--nest-cyan);
+    box-shadow: 0 0 0 3px rgba(79, 195, 227, 0.22);
+    outline: none;
+}
+
+form p {
+    margin-bottom: 1rem;
+}
+
+/* ========================= ROOM GRID ========================= */
+
+.room-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 1.4rem;
+}
+
+.room-card {
+    background: #fff;
+    border: 1px solid var(--nest-border);
+    border-radius: 16px;
+    overflow: hidden;
+    text-decoration: none;
+    color: var(--nest-ink);
+    display: block;
+    box-shadow: 0 3px 12px rgba(15, 32, 39, 0.06);
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.room-card:hover {
+    box-shadow: 0 16px 34px rgba(11, 30, 51, 0.18);
+    transform: translateY(-5px);
+    color: var(--nest-ink);
+}
+
+.room-card-img {
+    height: 175px;
+    background-size: cover;
+    background-position: center;
+    background-color: #EEF2F4;
+}
+
+.room-card-img-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: #C3CDD3;
+}
+
+.room-card-body {
+    padding: 1.15rem 1.3rem 1.4rem;
+}
+
+.room-card-body h5 {
+    font-size: 1.1rem;
+    margin: 0 0 0.4rem;
+}
+
+.room-card-meta {
+    color: var(--nest-muted);
+    font-size: 0.86rem;
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.amenity-chip {
+    background: #EAFAFD;
+    color: var(--nest-cyan-dark);
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 0.3rem 0.75rem;
+    border-radius: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin: 0.15rem 0.3rem 0 0;
+}
+
+/* ========================= TABLE ========================= */
+
+.table {
+    background: var(--nest-surface);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(15, 32, 39, 0.06);
+}
+
+.table th {
+    color: var(--nest-navy);
+    font-weight: 600;
+    font-size: 0.82rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    border-bottom: 1px solid var(--nest-border) !important;
+    background: #FAFBFC;
+    padding: 0.85rem 1rem;
+}
+
+.table td {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--nest-border);
+    vertical-align: middle;
+    font-size: 0.9rem;
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.table-hover tbody tr:hover {
+    background-color: #FAFDFE;
+}
+
+/* ========================= MESSAGES ========================= */
+
+.messages-wrap {
+    position: fixed;
+    top: 70px;
+    right: 20px;
+    z-index: 1050;
+    width: 320px;
+}
+
+.alert {
+    border-radius: 6px;
+    border: 1px solid;
+    font-size: 0.88rem;
+    padding: 0.85rem 1.1rem;
+}
+
+.alert-warning {
+    background: #FFF8E6;
+    border-color: #FCE3A3;
+    color: #856404;
+}
+
+.alert-danger {
+    background: var(--nest-danger-light);
+    border-color: #F5C2C4;
+    color: #A11212;
+}
+
+.alert-success {
+    background: #E9F9EF;
+    border-color: #B4E6C4;
+    color: #1E7A3E;
+}
+
+.alert-info {
+    background: #EAFAFD;
+    border-color: #A8E6F0;
+    color: var(--nest-cyan-dark);
+}
+
+/* ========================= EMPTY STATE ========================= */
+
+.empty-state {
+    text-align: center;
+    padding: 3rem 1rem;
+    color: var(--nest-muted);
+}
+
+.empty-state i {
+    font-size: 2.5rem;
+    color: #D3DBDF;
+    display: block;
+    margin-bottom: 0.8rem;
+}
+
+/* ========================= FOOTER ========================= */
+
+.site-footer {
+    text-align: center;
+    padding: 1.5rem;
+    color: var(--nest-muted);
+    font-size: 0.8rem;
+    border-top: 1px solid var(--nest-border);
+    margin-top: 3rem;
+}
+
+/* ========================= RESPONSIVE ========================= */
+
+@media (max-width: 768px) {
+    .container-fluid.mt-4 {
+        padding: 1.5rem 15px 2.5rem;
+    }
+
+    .navbar {
+        padding: 0.7rem 1rem;
+    }
+
+    .hero-banner {
+        padding: 1.8rem 1.5rem;
+    }
+
+    .hero-banner h1 {
+        font-size: 1.5rem;
+    }
+
+    .room-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .messages-wrap {
+        width: calc(100% - 30px);
+        right: 15px;
+    }
+}
+
+/* ========================= BOOKING LIST — CARD LAYOUT ========================= */
+
+.booking-section {
+    margin-bottom: 2.5rem;
+}
+
+.booking-section-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1rem;
+}
+
+.booking-section-header h5 {
+    font-weight: 700;
+    margin: 0;
+    font-size: 1.05rem;
+}
+
+.booking-section-count {
+    font-size: 0.75rem;
+    font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 20px;
+}
+
+.count-today    { background: rgba(52, 211, 153, 0.15); color: var(--nest-success); }
+.count-upcoming { background: var(--nest-primary-soft); color: var(--nest-primary); }
+.count-past     { background: var(--nest-surface-raised); color: var(--nest-muted); }
+
+.booking-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 0.9rem;
+}
+
+.booking-card {
+    background: var(--nest-surface);
+    border: 1px solid var(--nest-border);
+    border-left: 3px solid var(--nest-border);
+    border-radius: 10px;
+    padding: 1rem 1.1rem;
+    transition: border-color 0.15s ease, transform 0.15s ease;
+}
+
+.booking-card.is-today    { border-left-color: var(--nest-success); }
+.booking-card.is-upcoming { border-left-color: var(--nest-primary); }
+.booking-card.is-past     { border-left-color: var(--nest-border); opacity: 0.65; }
+
+.booking-card:not(.is-past):hover {
+    transform: translateY(-2px);
+    border-color: var(--nest-primary);
+}
+
+.booking-card-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 0.75rem;
+}
+
+/* .booking-card-room, .booking-card-date, .booking-card-icon:
+   kept the later/larger definitions further down, removed the earlier duplicates here */
+
+.booking-card-time {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.92rem;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+}
+
+.booking-card-time i {
+    color: var(--nest-primary);
+    font-size: 0.85rem;
+}
+
+.booking-card.is-past .booking-card-time i {
+    color: var(--nest-muted);
+}
+
+.booking-card-meta {
+    color: var(--nest-muted);
+    font-size: 0.76rem;
+    margin-bottom: 0.75rem;
+}
+
+.booking-card-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.booking-card-actions .btn {
+    flex: 1;
+    font-size: 0.82rem;
+    padding: 0.35rem 0.6rem;
+}
+
+.booking-empty-row {
+    color: var(--nest-muted);
+    font-size: 0.88rem;
+    padding: 1.25rem;
+    text-align: center;
+    background: var(--nest-surface);
+    border: 1px dashed var(--nest-border);
+    border-radius: 10px;
+}
+
+.filter-bar {
+    background: var(--nest-surface);
+    border: 1px solid var(--nest-border);
+    border-radius: 12px;
+    padding: 1rem 1.1rem;
+    margin-bottom: 2rem;
+}
+
+.filter-bar .form-select {
+    min-width: 160px;
+    padding-right: 2.25rem;
+    background-position: right 0.85rem center;
+}
+
+.undo-toast {
+    background: var(--nest-surface-raised);
+    border: 1px solid var(--nest-border);
+    border-left: 3px solid var(--nest-primary);
+    color: var(--nest-text);
+    border-radius: 10px;
+    padding: 10px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 0.85rem;
+    margin-top: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.undo-toast-count {
+    color: var(--nest-muted);
+    font-size: 0.78rem;
+}
+
+.undo-toast-btn {
+    flex-shrink: 0;
+    color: var(--nest-text);
+    border: 1px solid var(--nest-border);
+
+}
+
+/* final (winning) definition — 40px version, larger icon size */
+.booking-card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background: var(--nest-primary-soft);
+    color: var(--nest-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    flex-shrink: 0;
+}
+
+.booking-card.is-past .booking-card-icon {
+    background: var(--nest-surface-raised);
+    color: var(--nest-muted);
+}
+
+/* ========================= NEXT UP HERO CARD ========================= */
+
+.next-up-hero {
+    background: linear-gradient(135deg, var(--nest-primary-soft), var(--nest-surface));
+    border: 1px solid var(--nest-primary);
+    border-radius: 14px;
+    padding: 1.5rem 1.75rem;
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.next-up-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    background: var(--nest-primary);
+    color: #06131A;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+}
+
+.next-up-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--nest-primary);
+    margin-bottom: 0.2rem;
+}
+
+.next-up-title {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-bottom: 0.15rem;
+}
+
+.next-up-sub {
+    color: var(--nest-muted);
+    font-size: 0.88rem;
+}
+
+.next-up-countdown {
+    margin-left: auto;
+    text-align: right;
+    flex-shrink: 0;
+}
+
+.next-up-countdown-value {
+    font-size: 1.3rem;
+    font-weight: 700;
+    color: var(--nest-primary);
+}
+
+.next-up-countdown-label {
+    font-size: 0.72rem;
+    color: var(--nest-muted);
+}
+
+/* ========================= RELATIVE TIME BADGE ========================= */
+
+.relative-time {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--nest-primary);
+    background: var(--nest-primary-soft);
+    padding: 2px 8px;
+    border-radius: 20px;
+    margin-left: 6px;
+    white-space: nowrap;
+}
+
+/* final (winning) definition — 1.05rem version */
+.booking-card-room {
+    font-weight: 700;
+    font-size: 1.05rem;
+    line-height: 1.2;
+}
+
+/* final (winning) definition — includes flex layout for icon+text */
+.booking-card-date {
+    color: var(--nest-muted);
+    font-size: 0.8rem;
+    margin-top: 3px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* ========================= CONFIRM MODAL ========================= */
+
+.nest-confirm-modal {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15);
+}
+
+.nest-confirm-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 28px;
+    background: rgba(0, 184, 217, 0.12);
+    color: var(--nest-primary, #00B8D9);
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.nest-confirm-icon.icon-danger {
+    background: rgba(232, 93, 93, 0.12);
+    color: #E85D5D;
+}
+
+.modal.fade .modal-dialog {
+    transform: translateY(-20px) scale(0.97);
+}
+
+.modal.show .modal-dialog {
+    transform: translateY(0) scale(1);
+}

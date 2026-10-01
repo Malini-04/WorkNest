@@ -1,0 +1,114 @@
+{% extends 'bookings/base.html' %}
+{% load static %}
+{% block title %} — {{ room.name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/timeline.css' %}">
+{% endblock %}
+
+{% block content %}
+<h2>{{ room.name }}</h2>
+{% if room.image %}
+    <img src="{{ room.image.url }}" alt="{{ room.name }}" class="img-fluid rounded mb-3" style="max-height:300px; object-fit:cover;">
+{% endif %}
+<p>Capacity: {{ room.capacity }}</p>
+<p>
+    Amenities:
+    {% for amenity in room.amenities.all %}
+        <span class="badge bg-secondary">{{ amenity.name }}</span>
+    {% empty %}<span class="text-muted">None listed</span>{% endfor %}
+</p>
+
+<form method="get" class="mb-3">
+    <label class="form-label">Date</label>
+    <input type="date" name="date" value="{{ selected_date }}" class="form-control w-auto d-inline-block"
+           id="roomDateInput" min="{{ today }}" max="{{ max_bookable_date }}">
+</form>
+
+{% if not existing_bookings %}
+<div class="alert alert-success mb-3">
+    <i class="bi bi-check-circle"></i> This room is fully open on {{ selected_date }} — no existing bookings.
+</div>
+{% endif %}
+
+<form method="post" action="{% url 'new_booking' %}" id="newBookingForm" novalidate>
+    {% csrf_token %}
+    <input type="hidden" name="room" value="{{ room.id }}">
+    {{ form.non_field_errors }}
+    <input type="hidden" id="id_date" name="date" value="{{ selected_date }}">
+    <input type="hidden" id="id_start_time" name="start_time">
+    <input type="hidden" id="id_end_time" name="end_time">
+
+
+    <div class="timeline-wrapper" id="timelineWrapper">
+        <div class="timeline-inner" id="timelineInner">
+            <div class="time-header" id="timeHeader"></div>
+            <div class="time-grid" id="timeGrid">
+                {% for b in existing_bookings %}
+                <div class="existing-booking"
+                     style="left: calc({{ b.start_slot }} * 60px); width: calc(({{ b.end_slot }} - {{ b.start_slot }}) * 60px);"
+                     data-start="{{ b.start_slot }}" data-end="{{ b.end_slot }}">
+                    {{ b.label }}
+                </div>
+                {% endfor %}
+                <div id="selection" class="selection"><div id="selectionText" class="selection-text"></div></div>
+            </div>
+        </div>
+    </div>
+    <div class="legend">
+        <div class="legend-item"><div class="legend-box legend-booked"></div> Already booked</div>
+        <div class="legend-item"><div class="legend-box legend-selected"></div> Your selection</div>
+        <div class="legend-item"><div class="legend-box legend-blocked"></div> Time has passed</div>
+    </div>
+
+    <div id="bookingDetails" class="booking-details">Drag across the timeline to select a time.</div>
+    <button type="submit" id="bookButton" class="btn btn-primary mt-3" disabled>Book This Room</button>
+</form>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/room-timeline.js' %}?v=2"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const bookingForm = document.getElementById('newBookingForm');
+    if (!bookingForm) return;
+
+    bookingForm.addEventListener('submit', function (e) {
+        e.preventDefault();
+        const startVal = document.getElementById('id_start_time').value;
+        const endVal = document.getElementById('id_end_time').value;
+        if (!startVal || !endVal) return;
+
+        nestConfirm(
+            'Confirm booking {{ room.name }} on {{ selected_date }} from ' + startVal + ' to ' + endVal + '?',
+            function () {
+                const formData = new FormData(bookingForm);
+                nestPostForm(bookingForm.action, formData, function (data) {
+                    showInlineAlert('success', data.message);
+                    setTimeout(function () { window.location.href = "{% url 'bookings' %}"; }, 900);
+                }, function (data) {
+                     showInlineAlert('danger', data.message || 'Could not complete booking.');
+                });
+            },
+            { title: 'Confirm Booking', confirmText: 'Yes, Book It', confirmClass: 'btn-primary' }
+        );
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const dateInput = document.getElementById('roomDateInput');
+    if (dateInput) {
+        const minDate = dateInput.getAttribute('min');
+
+        dateInput.addEventListener('change', function () {
+            if (minDate && this.value < minDate) {
+                showInlineAlert('warning', "You can't view a past date. Reset to today.");
+                this.value = minDate;
+            }
+            this.form.submit();
+        });
+    }
+});
+</script>
+{% endblock %}

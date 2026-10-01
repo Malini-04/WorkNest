@@ -1,0 +1,28 @@
+{% extends 'bookings/base.html' %}
+{% block title %} — New Booking{% endblock %}
+{% block content %}
+<h2>New Booking</h2>
+<p class="text-muted">Select a room to view its details and book a time slot.</p>
+
+{% if at_limit %}
+<div class="alert alert-warning">
+    You've reached the limit of 10 active bookings ({{ active_count }}/10). Cancel an existing booking before creating a new one.
+</div>
+{% elif active_count >= 7 %}
+<div class="alert alert-info">
+    You currently have {{ active_count }}/10 active bookings.
+</div>
+{% endif %}
+
+{% for room in rooms %}
+<a href="{% url 'room_detail' room.id %}" class="room-item text-decoration-none text-dark">
+    {% if room.image %}
+        <img src="{{ room.image.url }}" alt="{{ room.name }}" style="width:80px; height:60px; object-fit:cover; border-radius:4px; margin-right:12px;">
+    {% endif %}
+    <div>
+        <h5>{{ room.name }}</h5>
+        <div class="meta">Capacity: {{ room.capacity }}</div>
+    </div>
+</a>
+{% endfor %}
+{% endblock %}

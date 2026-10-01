@@ -1,0 +1,89 @@
+{% extends 'bookings/base.html' %}
+{% load static %}
+
+{% block title %} — Calendar{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/calendar.css' %}?v=13">
+{% endblock %}
+
+{% block content %}
+
+<div class="page-header">
+    <h2>Room Availability Calendar</h2>
+    <p class="page-subtext">Rooms are shown as rows, time runs across the top.</p>
+</div>
+
+<form method="get" class="mb-3" id="jump-date-form">
+    <label for="calendar-datepicker" class="form-label">Jump to date</label>
+    <input
+        type="date"
+        id="calendar-datepicker"
+        name="date"
+        class="form-control"
+        style="max-width: 200px;"
+        value="{{ selected_date|date:'Y-m-d' }}"
+    >
+</form>
+
+<div class="calendar-legend">
+    <span class="legend-item"><span class="legend-swatch legend-mine"></span> My booking</span>
+    <span class="legend-item"><span class="legend-swatch legend-other"></span> Booked by others</span>
+    <span class="legend-item"><span class="legend-swatch legend-past"></span> Past</span>
+</div>
+
+<div class="calendar-card">
+
+    <div class="calendar-toolbar">
+        <div class="btn-group">
+            <a class="btn btn-outline-secondary" href="?date={{ prev_date|date:'Y-m-d' }}">&lt;</a>
+            <a class="btn btn-outline-secondary" href="?date={{ next_date|date:'Y-m-d' }}">&gt;</a>
+        </div>
+        <a class="btn btn-secondary {% if selected_date == today_date %}disabled{% endif %} " href="?date={{ today_date|date:'Y-m-d' }}" >Today</a>
+        <div class="calendar-title">{{ selected_date|date:'F j, Y' }}</div>
+    </div>
+
+    <div class="calendar-scroll" id="calendar-scroll">
+        <table class="calendar-table">
+            <thead>
+                <tr>
+                    <th class="room-col">Rooms</th>
+                    {% for h in hours %}
+                        <th colspan="2" data-hour="{{ h.hour }}">{{ h.label }}</th>
+                    {% endfor %}
+                    <th class="boundary-col">{{ closing_label }}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in room_rows %}
+                <tr>
+                    <td class="room-col">
+                        <a href="{% url 'room_detail' row.room.id %}?date={{ selected_date|date:'Y-m-d' }}">{{ row.room.name }}</a>
+                    </td>
+                    {% for cell in row.cells %}
+                       {% if cell.type == 'booking' %}
+                            <td colspan="{{ cell.span }}"
+                                    class="slot-cell booking-cell {% if cell.is_mine %}booking-cell-mine{% endif %} {% if cell.is_past %}booking-cell-past{% endif %}"
+                                    title="{{ cell.label }}">
+                                    {{ cell.label }}
+                            </td>
+                        {% else %}
+                            <td class="slot-cell"></td>
+                        {% endif %}
+                    {% endfor %}
+                    <td class="boundary-col"></td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="50" class="text-muted text-center py-3">No rooms available.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/calendar.js' %}?v=10"></script>
+{% endblock %}

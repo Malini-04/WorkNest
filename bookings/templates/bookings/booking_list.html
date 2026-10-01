@@ -1,0 +1,185 @@
+{% extends 'bookings/base.html' %}
+{% load static %}
+{% block title %} — My Bookings{% endblock %}
+
+{% block content %}
+
+<div class="page-header mb-4">
+    <h2>My Bookings</h2>
+    <p class="page-subtext">All your room reservations, organized by time.</p>
+</div>
+
+{% if next_booking %}
+<div class="next-up-hero">
+    <div class="next-up-icon"><i class="bi bi-calendar-event"></i></div>
+    <div>
+        <div class="next-up-label">Your Next Meeting</div>
+        <div class="next-up-title">{{ next_booking.room.name }}</div>
+        <div class="next-up-sub">
+            {% if next_booking.date == today %}Today{% else %}{{ next_booking.date|date:"D, M j" }}{% endif %}
+            · {{ next_booking.start_time|time:'g:i A' }} – {{ next_booking.end_time|time:'g:i A' }}
+        </div>
+    </div>
+    <div class="next-up-countdown"
+         id="nextUpCountdown"
+         data-date="{{ next_booking.date|date:'Y-m-d' }}"
+         data-time="{{ next_booking.start_time|time:'H:i' }}">
+        <div class="next-up-countdown-value">—</div>
+        <div class="next-up-countdown-label">calculating…</div>
+    </div>
+</div>
+{% endif %}
+
+<form method="get" class="filter-bar row g-2 align-items-center">
+    <div class="col-auto">
+        <select name="room" class="form-select">
+            <option value="">All Rooms</option>
+            {% for room in all_rooms %}
+                <option value="{{ room.id }}" {% if request.GET.room == room.id|stringformat:"s" %}selected{% endif %}>
+                    {{ room.name }}
+                </option>
+            {% endfor %}
+        </select>
+    </div>
+    <div class="col-auto">
+        <input type="date" name="date" class="form-control" value="{{ request.GET.date }}">
+    </div>
+    <div class="col-auto">
+        <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+        <a href="{% url 'bookings' %}" class="btn btn-outline-secondary btn-sm">Clear</a>
+    </div>
+</form>
+
+{% if not has_any %}
+<div class="empty-state">
+    <i class="bi bi-calendar-x"></i>
+    <p>No bookings yet.</p>
+    <a href="{% url 'dashboard' %}" class="btn btn-primary btn-sm">Browse Rooms</a>
+</div>
+{% else %}
+
+<!-- TODAY -->
+<div class="booking-section">
+    <div class="booking-section-header">
+        <h5>Today</h5>
+        <span class="booking-section-count count-today">{{ today_bookings|length }}</span>
+    </div>
+    {% if today_bookings %}
+    <div class="booking-cards">
+        {% for booking in today_bookings %}
+        <div class="booking-card is-today" data-cancel-url="{% url 'cancel_booking' booking.id %}">
+            <div class="booking-card-top">
+                <div class="booking-card-icon">
+                    {% if booking.room.capacity <= 2 %}<i class="bi bi-person"></i>
+                    {% elif booking.room.capacity <= 6 %}<i class="bi bi-people"></i>
+                    {% else %}<i class="bi bi-building"></i>{% endif %}
+                </div>
+                <div>
+                    <div class="booking-card-room">{{ booking.room.name }}</div>
+                    <div class="booking-card-date">
+                        Today
+                        <span class="relative-time" data-relative-date="{{ booking.date|date:'Y-m-d' }}" data-relative-time="{{ booking.start_time|time:'H:i' }}">…</span>
+                    </div>
+                </div>
+            </div>
+            <div class="booking-card-time"><i class="bi bi-clock"></i> {{ booking.start_time|time:'g:i A' }} – {{ booking.end_time|time:'g:i A' }}</div>
+            <div class="booking-card-meta">Booked {{ booking.created_at|date:"M d, g:i A" }}</div>
+            {% if not booking.is_locked %}
+            <div class="booking-card-actions">
+                <a href="{% url 'edit_booking' booking.id %}" class="btn btn-outline-primary">Edit</a>
+                <button type="button" class="btn btn-outline-danger cancel-booking-btn">Cancel</button>
+            </div>
+            {% else %}
+            <div class="text-muted small">Locked — starts within 15 minutes or has ended.</div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="booking-empty-row">No bookings today.</div>
+    {% endif %}
+</div>
+
+<!-- UPCOMING -->
+<div class="booking-section">
+    <div class="booking-section-header">
+        <h5>Upcoming</h5>
+        <span class="booking-section-count count-upcoming">{{ upcoming_bookings|length }}</span>
+    </div>
+    {% if upcoming_bookings %}
+    <div class="booking-cards">
+        {% for booking in upcoming_bookings %}
+        <div class="booking-card is-upcoming" data-cancel-url="{% url 'cancel_booking' booking.id %}">
+            <div class="booking-card-top">
+                <div class="booking-card-icon">
+                    {% if booking.room.capacity <= 2 %}<i class="bi bi-person"></i>
+                    {% elif booking.room.capacity <= 6 %}<i class="bi bi-people"></i>
+                    {% else %}<i class="bi bi-building"></i>{% endif %}
+                </div>
+                <div>
+                    <div class="booking-card-room">{{ booking.room.name }}</div>
+                    <div class="booking-card-date">
+                        {{ booking.date|date:"D, M j, Y" }}
+                        <span class="relative-time" data-relative-date="{{ booking.date|date:'Y-m-d' }}" data-relative-time="{{ booking.start_time|time:'H:i' }}">…</span>
+                    </div>
+                </div>
+            </div>
+            <div class="booking-card-time"><i class="bi bi-clock"></i> {{ booking.start_time|time:'g:i A' }} – {{ booking.end_time|time:'g:i A' }}</div>
+            <div class="booking-card-meta">Booked {{ booking.created_at|date:"M d, g:i A" }}</div>
+            {% if not booking.is_locked %}
+            <div class="booking-card-actions">
+                <a href="{% url 'edit_booking' booking.id %}" class="btn btn-outline-primary">Edit</a>
+                <button type="button" class="btn btn-outline-danger cancel-booking-btn">Cancel</button>
+            </div>
+            {% else %}
+            <div class="text-muted small">Locked — starts within 15 minutes.</div>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="booking-empty-row">No upcoming bookings.</div>
+    {% endif %}
+</div>
+
+<!-- PAST -->
+<div class="booking-section">
+    <div class="booking-section-header">
+        <h5>Past</h5>
+        <span class="booking-section-count count-past">{{ past_bookings|length }}</span>
+    </div>
+    {% if past_bookings %}
+    <div class="booking-cards">
+        {% for booking in past_bookings %}
+        <div class="booking-card is-past">
+            <div class="booking-card-top">
+                <div class="booking-card-icon">
+                    {% if booking.room.capacity <= 2 %}<i class="bi bi-person"></i>
+                    {% elif booking.room.capacity <= 6 %}<i class="bi bi-people"></i>
+                    {% else %}<i class="bi bi-building"></i>{% endif %}
+                </div>
+                <div>
+                    <div class="booking-card-room">{{ booking.room.name }}</div>
+                    <div class="booking-card-date">{{ booking.date|date:"D, M j, Y" }}</div>
+                </div>
+            </div>
+            <div class="booking-card-time"><i class="bi bi-clock"></i> {{ booking.start_time|time:'g:i A' }} – {{ booking.end_time|time:'H:i' }}</div>
+            <div class="booking-card-meta">Booked {{ booking.created_at|date:"M d, g:i A" }}</div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="booking-empty-row">No past bookings.</div>
+    {% endif %}
+</div>
+
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/relative-time.js' %}"></script>
+<script src="{% static 'js/booking-list.js' %}"></script>
+<script>
+    initBookingList("{{ csrf_token }}");
+</script>
+{% endblock %}

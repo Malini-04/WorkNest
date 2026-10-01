@@ -1,0 +1,111 @@
+{% extends 'bookings/base.html' %}
+{% load static %}
+{% block title %} — Dashboard{% endblock %}
+{% block content %}
+
+<div class="page-header">
+    <h2>Meeting Rooms</h2>
+    <p class="page-subtext">Browse available rooms and book a time slot.</p>
+</div>
+<div class="hero-banner">
+    <div class="hero-content">
+        <h1>Welcome back, {{ request.user.get_full_name|default:request.user.username }} 👋</h1>
+        <p>Find a room, check availability, and book your next meeting in seconds.</p>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-md-4">
+        <div class="stat-card d-flex align-items-center gap-3 p-4 rounded-4 shadow-sm">
+            <div class="stat-icon"><i class="bi bi-door-open"></i></div>
+            <div>
+                <div class="stat-number">{{ stats.total_rooms }}</div>
+                <div class="stat-label">Total Rooms</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card d-flex align-items-center gap-3 p-4 rounded-4 shadow-sm">
+            <div class="stat-icon"><i class="bi bi-calendar-check"></i></div>
+            <div>
+                <div class="stat-number">{{ stats.my_active_bookings }}</div>
+                <div class="stat-label">Your Active Bookings</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="stat-card d-flex align-items-center gap-3 p-4 rounded-4 shadow-sm">
+            <div class="stat-icon"><i class="bi bi-clock-history"></i></div>
+            <div>
+                <div class="stat-number">{{ stats.bookings_today }}</div>
+                <div class="stat-label">Bookings Today</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-2 mb-3">
+    <div class="col-md-6">
+        <input type="text" id="roomSearchInput" class="form-control" placeholder="Search rooms by name...">
+    </div>
+    <div class="col-md-6">
+        <select id="capacityFilter" class="form-select">
+            <option value="0">Any capacity</option>
+            <option value="2">2+ people</option>
+            <option value="4">4+ people</option>
+            <option value="6">6+ people</option>
+            <option value="10">10+ people</option>
+        </select>
+    </div>
+</div>
+
+<div class="room-grid" id="roomGrid">
+    {% for room in rooms %}
+    <a href="{% url 'room_detail' room.id %}" class="room-card" data-name="{{ room.name|lower }}" data-capacity="{{ room.capacity }}">
+        {% if room.image %}
+            <div class="room-card-img" style="background-image: url('{{ room.image.url }}');"></div>
+        {% else %}
+            <div class="room-card-img room-card-img-placeholder"><i class="bi bi-camera"></i></div>
+        {% endif %}
+        <div class="room-card-body">
+            <div class="booking-card-icon mb-2">
+                {% if room.capacity <= 2 %}<i class="bi bi-person"></i>
+                {% elif room.capacity <= 6 %}<i class="bi bi-people"></i>
+                {% else %}<i class="bi bi-building"></i>{% endif %}
+            </div>
+            <h5>{{ room.name }}</h5>
+            <div class="room-card-meta"><i class="bi bi-people"></i> {{ room.capacity }} people</div>
+            <div class="room-card-amenities">
+                {% for a in room.amenities.all|slice:":3" %}
+                    <span class="amenity-chip">
+                        {% if 'Projector' in a.name %}<i class="bi bi-projector"></i>
+                        {% elif 'TV' in a.name %}<i class="bi bi-tv"></i>
+                        {% elif 'Video' in a.name %}<i class="bi bi-camera-video"></i>
+                        {% elif 'Whiteboard' in a.name %}<i class="bi bi-easel"></i>
+                        {% elif 'Wifi' in a.name %}<i class="bi bi-wifi"></i>
+                        {% elif 'Speaker' in a.name %}<i class="bi bi-mic"></i>
+                        {% else %}<i class="bi bi-check2"></i>{% endif %}
+                        {{ a.name }}
+                    </span>
+                {% endfor %}
+            </div>
+        </div>
+    </a>
+    {% empty %}
+    <div class="empty-state">
+        <i class="bi bi-building"></i>
+        <p>No rooms have been added yet.</p>
+    </div>
+    {% endfor %}
+</div>
+
+<div id="noRoomsMatch" class="empty-state" style="display:none;">
+    <i class="bi bi-search"></i>
+    <p>No rooms match your search.</p>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/dashboard.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,108 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+    --nest-navy: #0B1E33;
+    --nest-navy-light: #15304D;
+    --nest-cyan: #4FC3E3;
+    --nest-cyan-dark: #2EA8C9;
+    --nest-bg: #F7FAFB;
+    --nest-ink: #16232E;
+    --nest-muted: #6B7C87;
+    --nest-border: #E3E8EB;
+    --nest-danger: #E5484D;
+    --nest-danger-light: #FDECEC;
+}
+
+.login-page {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--nest-bg);
+    font-family: 'Inter', sans-serif;
+    padding: 1.5rem;
+}
+
+.login-card {
+    background: #fff;
+    padding: 2.75rem 2.5rem;
+    border-radius: 16px;
+    border-top: 4px solid var(--nest-cyan);
+    box-shadow: 0 3px 12px rgba(15, 32, 39, 0.06), 0 20px 48px rgba(11, 30, 51, 0.18);
+    width: 100%;
+    max-width: 380px;
+}
+
+.brand {
+    text-align: center;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    font-weight: 800;
+    color: var(--nest-navy);
+    margin-bottom: 0.2rem;
+    font-size: 1.75rem;
+}
+
+.tagline {
+    text-align: center;
+    color: var(--nest-muted);
+    font-size: 0.88rem;
+    margin-bottom: 1.75rem;
+}
+
+.login-card label {
+    font-weight: 500;
+    color: var(--nest-ink);
+    font-size: 0.86rem;
+    display: flex;
+    align-items: center;
+}
+
+.login-card label i {
+    color: var(--nest-muted);
+    font-size: 0.9rem;
+}
+
+.login-card input[type="text"],
+.login-card input[type="password"] {
+    width: 100%;
+    padding: 0.55rem 0.8rem;
+    border: 1px solid var(--nest-border);
+    border-radius: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    color: var(--nest-ink);
+    margin-top: 0.3rem;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.login-card input:focus {
+    outline: none;
+    border-color: var(--nest-cyan);
+    box-shadow: 0 0 0 3px rgba(79, 195, 227, 0.22);
+}
+
+.login-card .btn-primary {
+    background-color: var(--nest-navy);
+    border-color: var(--nest-navy);
+    font-weight: 600;
+    font-size: 0.88rem;
+    padding: 0.55rem 1.1rem;
+    border-radius: 6px;
+    transition: all 0.15s ease;
+}
+
+.login-card .btn-primary:hover {
+    background-color: var(--nest-navy-light);
+    border-color: var(--nest-navy-light);
+}
+
+.login-card .alert-danger {
+    background: var(--nest-danger-light);
+    border: 1px solid #F5C2C4;
+    color: #A11212;
+    font-size: 0.85rem;
+    border-radius: 6px;
+    padding: 0.7rem 0.9rem;
+    display: flex;
+    align-items: center;
+}

@@ -1,0 +1,59 @@
+{% extends 'bookings/base.html' %}
+{% load static %}
+{% block title %} — Edit Booking{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/timeline.css' %}?v=2">
+{% endblock %}
+
+{% block content %}
+<h2>Edit Booking — {{ booking.room.name }}</h2>
+<p class="text-muted" id="currentTimeLabel">Currently: {{ booking.start_time }}–{{ booking.end_time }}</p>
+
+<form method="post" id="editBookingForm" novalidate>
+    {% csrf_token %}
+    {{ form.non_field_errors }}
+
+    <input type="hidden" name="room" value="{{ booking.room.id }}">
+    <input type="hidden" id="id_date" name="date" value="{{ booking.date|date:'Y-m-d' }}">
+    <input type="hidden" id="id_start_time" name="start_time" value="{{ booking.start_time|time:'g:i A' }}">
+    <input type="hidden" id="id_end_time" name="end_time" value="{{ booking.end_time|time:'g:i A' }}">
+
+    <div class="timeline-wrapper"
+         id="timelineWrapper"
+         data-initial-start="{{ current_start_slot }}"
+         data-initial-end="{{ current_end_slot }}">
+        <div class="timeline-inner" id="timelineInner">
+            <div class="time-header" id="timeHeader"></div>
+            <div class="time-grid" id="timeGrid">
+                {% for b in existing_bookings %}
+                <div class="existing-booking"
+                     style="left: calc({{ b.start_slot }} * 60px); width: calc(({{ b.end_slot }} - {{ b.start_slot }}) * 60px);"
+                     data-start="{{ b.start_slot }}" data-end="{{ b.end_slot }}">
+                    {{ b.label }}
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <div class="legend">
+        <div class="legend-item"><div class="legend-box legend-booked"></div> Booked by others</div>
+        <div class="legend-item"><div class="legend-box legend-mine"></div> Your booking</div>
+        <div class="legend-item"><div class="legend-box legend-blocked"></div> Time has passed</div>
+    </div>
+
+    <div id="bookingDetails" class="booking-details">Drag the green block to move it, or its edges to resize.</div>
+
+    <button type="submit" class="btn btn-primary mt-3">Save Changes</button>
+    <a href="{% url 'bookings' %}" class="btn btn-outline-secondary mt-3">Back</a>
+</form>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/room-timeline.js' %}?v=2"></script>
+<script src="{% static 'js/edit-booking.js' %}"></script>
+<script>
+    initEditBooking("{% url 'bookings' %}");
+</script>
+{% endblock %}
